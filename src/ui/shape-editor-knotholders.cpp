@@ -1047,6 +1047,8 @@ public:
 protected:
     void set_internal(Geom::Point const &p, Geom::Point const &origin, unsigned int state);
 
+private:
+    Modifiers::Modifier *mod_trans_confine = Modifiers::Modifier::get(Modifiers::Type::TRANS_CONFINE);
 };
 
 void 
@@ -1136,7 +1138,7 @@ MarkerKnotHolderEntityScale::set_internal(Geom::Point const &p, Geom::Point cons
     adjusted_scaleY = (dy/orig_height) + 1;
 
     // uniform scaling when ctrl+key is pressed
-    if(state & GDK_CONTROL_MASK) {
+    if(mod_trans_confine->active(state)) {
         adjusted_scaleX = fabs(adjusted_scaleX);
         adjusted_scaleY = fabs(adjusted_scaleY);
 
