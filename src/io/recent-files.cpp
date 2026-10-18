@@ -197,20 +197,20 @@ Glib::RefPtr<Gtk::RecentInfo> getInkscapeRecent(std::string const &filename)
  *
  * @returns - False optional if this isn't an auto save or crash, an empty string if is is
  *            but doesn't have an original filename because it was unsaved. Otherwise the
- *            original filename is provided.
+ *            original local filename is provided.
  */
 std::optional<std::string> openAsInkscapeRecentOriginalFile(std::string const &filename)
 {
     if (auto info = getInkscapeRecent(filename)) {
+        // Original filename stored as URI in description, see addInkscapeRecentSvg above.
+        auto original = Glib::filename_from_uri(info->get_description());
         if (info->has_group("Auto")) {
-            // Original filename stored in description, see addInkscapeRecentSvg above.
-            return info->get_description();
+            return original;
         }
         if (info->has_group("Crash")) {
-            auto desc = info->get_description();
             // Crash files are removed from recent-files tracker on opening
             removeInkscapeRecent(filename);
-            return desc;
+            return original;
         }
     }
     return {};
