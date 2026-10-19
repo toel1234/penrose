@@ -750,6 +750,9 @@ void CanvasGrid::updateScrollbars(double scale)
         deskarea |= doc->getRoot()->desktopGeometricBounds();
     }
 
+    // Account for desktop rotation, offset, etc - but ignore zoom
+    deskarea *= desktop->d2w() * Geom::Zoom(desktop->current_zoom()).inverse();
+
     // Canvas region we always show unconditionally.
     double const y_dir = desktop->yaxisdir();
     auto carea = deskarea * Geom::Scale(scale, scale * y_dir);
