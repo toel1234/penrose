@@ -916,9 +916,7 @@ double Layout::getActualLength() const
 {
     double length = 0;
     for (std::vector<Span>::const_iterator it_span = _spans.begin() ; it_span != _spans.end() ; it_span++) {
-        if (it_span == _spans.end() - 1 || (it_span + 1)->in_chunk != it_span->in_chunk) {
-            length += it_span->width();
-        }
+        length += it_span->width();
     }
     return length;
 }
