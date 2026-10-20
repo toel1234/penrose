@@ -714,6 +714,11 @@ struct MaskLuminanceToAlpha
  */
 unsigned DrawingItem::render(DrawingContext &dc, RenderContext &rc, Geom::IntRect const &area, unsigned flags, DrawingItem const *stop_at) const
 {
+    if (is<DrawingGlyphs>(this)) {
+        // Handled by DrawingText
+        return RENDER_STOP;
+    }
+
     bool const outline = flags & RENDER_OUTLINE;
     bool const render_filters = !(flags & RENDER_NO_FILTERS);
     bool const forcecache = _filter && render_filters;
@@ -1092,9 +1097,9 @@ Glib::ustring DrawingItem::name() const
         if (_item->getId())
             return _item->getId();
         else
-            return "No object id";
+            return "No object id" + _class_name;
     } else {
-        return "No associated object";
+        return "No associated object: " + _class_name;
     }
 }
 
@@ -1122,6 +1127,11 @@ void DrawingItem::recursivePrintTree(unsigned level) const
  */
 void DrawingItem::_markForRendering()
 {
+    if (is<DrawingGlyphs>(this)) {
+        // Handled by DrawingText
+        return;
+    }
+
     bool outline = _drawing.renderMode() == RenderMode::OUTLINE || _drawing.outlineOverlay();
     Geom::OptIntRect dirty = outline ? _bbox : _drawbox;
     if (!dirty) return;
@@ -1179,6 +1189,11 @@ void DrawingItem::_invalidateFilterBackground(Geom::IntRect const &area)
  */
 void DrawingItem::_markForUpdate(unsigned flags, bool propagate)
 {
+    if (is<DrawingGlyphs>(this)) {
+        // Handled by DrawingText
+        return;
+    }
+
     if (propagate) {
         _propagate_state |= flags;
     }
@@ -1207,6 +1222,10 @@ void DrawingItem::_markForUpdate(unsigned flags, bool propagate)
  */
 double DrawingItem::_cacheScore()
 {
+    if (is<DrawingGlyphs>(this)) {
+        return -1.0;
+    }
+
     Geom::OptIntRect cache_rect = _cacheRect();
     if (!cache_rect) return -1.0;
     // a crude first approximation:
