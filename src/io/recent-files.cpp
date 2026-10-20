@@ -202,8 +202,15 @@ Glib::RefPtr<Gtk::RecentInfo> getInkscapeRecent(std::string const &filename)
 std::optional<std::string> openAsInkscapeRecentOriginalFile(std::string const &filename)
 {
     if (auto info = getInkscapeRecent(filename)) {
-        // Original filename stored as URI in description, see addInkscapeRecentSvg above.
-        auto original = Glib::filename_from_uri(info->get_description());
+        // Original filename is stored as a URI in the description, see addInkscapeRecentSvg above.
+        std::string original;
+        if (!info->get_description().empty()) {
+            try {
+                original = Glib::filename_from_uri(info->get_description());
+            } catch (Glib::ConvertError e) {
+                g_warning("Could not parse original file URI from recent file: %s", e.what());
+            }
+        }
         if (info->has_group("Auto")) {
             return original;
         }
