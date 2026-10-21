@@ -21,6 +21,8 @@
 #include <boost/algorithm/string/join.hpp>
 #endif
 
+#include "config.h"
+
 #include "inkscape-application.h"
 #include "path-prefix.h"
 #include "preferences.h"
@@ -36,6 +38,10 @@ static void set_extensions_env()
         gchar *new_path = g_strdup_printf("%s" G_SEARCHPATH_SEPARATOR_S "%s", program_dir, path);
         g_setenv("PATH", new_path, true);
         g_free(new_path);
+
+        // Tell inkex which binary to call so it does not fall back to a system Inkscape.
+        auto inkscape_command = Glib::build_filename(program_dir, FORK_BINARY_NAME);
+        g_setenv("INKSCAPE_COMMAND", inkscape_command.c_str(), FALSE);
     }
 
     // add various locations to PYTHONPATH so extensions find their modules

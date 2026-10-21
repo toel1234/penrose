@@ -1,0 +1,31 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-or-later
+#
+# AppRun for the Penrose AppImage (POSIX sh, no bashisms).
+#
+# INKSCAPE_DATADIR semantics, proven against the source:
+#   src/path-prefix.cpp get_inkscape_datadir() uses $INKSCAPE_DATADIR as the
+#   directory that CONTAINS the "inkscape" resource directory, and expects
+#   "$INKSCAPE_DATADIR/inkscape" to be a directory. The compile-time default
+#   (CMakeScripts/ConfigPaths.cmake) is "${CMAKE_INSTALL_PREFIX}/share".
+#   So the env var means "<prefix>/share", not "<prefix>/share/inkscape".
+#   src/helper/gettext.cpp derives the default locale dir as
+#   dirname(datadir) + PACKAGE_LOCALE_DIR ("share/locale"), so
+#   INKSCAPE_LOCALEDIR means "<prefix>/share/locale".
+set -eu
+
+HERE=$(dirname "$(readlink -f "$0")")
+
+export INKSCAPE_DATADIR="$HERE/usr/share"
+export INKSCAPE_LOCALEDIR="$HERE/usr/share/locale"
+
+if [ -z "${XDG_DATA_DIRS:-}" ]; then
+    XDG_DATA_DIRS="/usr/local/share:/usr/share"
+fi
+export XDG_DATA_DIRS="$HERE/usr/share:$XDG_DATA_DIRS"
+
+# Deliberately no LD_LIBRARY_PATH: every bundled ELF carries $ORIGIN-based
+# RUNPATHs (set by fork/packaging/build-appimage.sh), and LD_LIBRARY_PATH
+# would leak into extension subprocesses (python) and hijack their imports.
+
+exec "$HERE/usr/bin/penrose" "$@"

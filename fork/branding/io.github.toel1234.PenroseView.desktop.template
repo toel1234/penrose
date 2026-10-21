@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+[Desktop Entry]
+Version=1.0
+Name=Penrose Viewer
+GenericName=Vector Graphics Viewer
+X-GNOME-FullName=Penrose Viewer Vector Graphics Viewer
+Comment=View Scalable Vector Graphics images
+Keywords=image;viewer;vector;drawing;
+Type=Application
+Categories=Graphics;Viewer;VectorGraphics;GTK;
+MimeType=${INKSCAPE_MIMETYPE}
+Exec=${FORK_VIEWER_BINARY_NAME} %F
+TryExec=${FORK_VIEWER_BINARY_NAME}
+Terminal=false
+StartupNotify=true
+Icon=${INKSCAPE_ICONPATH}

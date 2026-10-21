@@ -27,6 +27,8 @@
 #include <poppler-config.h>
 #endif
 
+#include "config.h"
+
 #include "inkscape-version.h" // Inkscape version
 
 
@@ -40,7 +42,7 @@ namespace Inkscape {
  * @return version string
  */
 std::string inkscape_version() {
-    return std::string("Inkscape ") + Inkscape::version_string;
+    return std::string(FORK_PRODUCT_NAME " ") + Inkscape::version_string;
 }
 
 /**

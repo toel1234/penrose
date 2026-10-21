@@ -23,6 +23,8 @@
 
 #include "desktop-widget.h"
 
+#include "config.h"
+
 #include <glibmm/i18n.h>
 #include <gtkmm/adjustment.h>
 #include <gtkmm/checkbutton.h>
@@ -398,7 +400,7 @@ SPDesktopWidget::~SPDesktopWidget() = default;
 /**
  * Set the title in the desktop-window (if desktop has an own window).
  *
- * The title has form file name: desktop number - Inkscape.
+ * The title has form file name: desktop number - Penrose.
  * The desktop number is only shown if it's 2 or higher,
  */
 void SPDesktopWidget::_updateTitle()
@@ -456,7 +458,7 @@ void SPDesktopWidget::_updateTitle()
             Name += ")";
         }
 
-        Name += " - Inkscape";
+        Name += " - " FORK_PRODUCT_NAME;
 
         if (prefs->getBool("/options/versionintitle/value", true)) {
             Name += " ";

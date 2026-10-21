@@ -122,7 +122,7 @@ void set_xdg_env()
 #ifdef __APPLE__
     // use bundle identifier
     // https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/MacOSXDirectories/MacOSXDirectories.html
-    auto app_support_dir = Glib::getenv("HOME") + "/Library/Application Support/org.inkscape.Inkscape";
+    auto app_support_dir = Glib::getenv("HOME") + "/Library/Application Support/" FORK_APP_ID;
 
     auto bundle_frameworks_dir      = _get_bundle_prefix_dir() + "/Frameworks";
     auto bundle_resources_dir       = _get_bundle_prefix_dir() + "/Resources";

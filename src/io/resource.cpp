@@ -39,7 +39,7 @@ using Inkscape::IO::file_test;
 
 namespace Inkscape::IO::Resource {
 
-#define INKSCAPE_PROFILE_DIR "inkscape"
+#define INKSCAPE_PROFILE_DIR FORK_CONFIG_DIR_NAME
 
 /**
  * @returns Path. Value is in platform-native encoding (see Glib::filename_to_utf8).
@@ -74,7 +74,7 @@ gchar *_get_path(Domain domain, Type type, char const *filename, char const *ext
         } break;
         case CACHE: {
             g_assert(type == NONE);
-            return g_build_filename(g_get_user_cache_dir(), "inkscape", filename, extra, nullptr);
+            return g_build_filename(g_get_user_cache_dir(), FORK_CONFIG_DIR_NAME, filename, extra, nullptr);
         } break;
 
         case SYSTEM:

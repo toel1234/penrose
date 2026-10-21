@@ -1,0 +1,58 @@
+# .paul/ledger.toml — Session history for cost/time attribution
+# Append-only.
+
+[[entries]]
+date = "2026-10-20 22:48"
+phase = "1"
+plan = "01-01"
+action = "PLAN created via claude-opus-5-5 (standard track); ROADMAP phases 1-6 defined; worker pipeline recorded in config.md"
+models = "claude-opus-5-5 (plan author); zai/glm-5.3-flash (orchestrator); deepseek-v4.1-flash + gemini-3.8-flash (smoke-verified workers)"
+duration_minutes = 0.3
+
+[[entries]]
+date = "2026-10-21 00:15"
+phase = "1"
+plan = "01-01"
+action = "APPLY complete: all ACs pass — upstream pinned (3d6e954a, GTK4), deps installed (14 pkgs by user), gtkmm 4.14 + cairo 1.18.6 source-built into build/deps, Inkscape 1.5-dev builds (267s) and passes all smoke tests, branding placeholders wired, 13-category inventory, name decision Penrose/penrose"
+models = "GLM-5.3 subagent (Task 1); deepseek-v4.1-flash (Task 2 scripts); gemini-3.8-flash via agy CLI (Task 3); claude-opus-5-5 (3 review gates + fixes); glm-5.3-flash (orchestrator/build/smoke)"
+duration_minutes = 90
+
+[[entries]]
+date = "2026-10-21 00:20"
+phase = "1"
+plan = "01-01"
+action = "UNIFY: SUMMARY.md restructured with frontmatter, STATE loop closed, paul.toml IDLE; phase-completion heuristic overridden by ROADMAP scope (3 plans, 1 done) — no phase transition"
+models = "glm-5.3-flash (orchestrator)"
+duration_minutes = 0.2
+
+[[entries]]
+date = "2026-10-21 00:35"
+phase = "1"
+plan = "01-02"
+action = "PLAN created via claude-opus-5-5 (standard, wave 2): apply Penrose rebrand; 4 ACs, 3 tasks; viewer identity derived (Penrose Viewer / penrose-view / io.github.peter.PenroseView); 12 risks documented"
+models = "claude-opus-5-5 (plan author); glm-5.3-flash (orchestrator)"
+duration_minutes = 9.3
+
+[[entries]]
+date = "2026-10-21 01:00"
+phase = "1"
+plan = "01-02"
+action = "APPLY complete: Penrose rebrand — penrose/penrose-view binaries, io.github.peter.Penrose(+View), penrose profile/gettext, 14 gemini SVGs + rendered rasters, strings/man/completion, verify-branding.sh ALL_BRANDING_CHECKS_OK; 3 opus gates with 8 fixes applied"
+models = "deepseek-v4.1-flash (Tasks 1,2b,3); gemini-3.8-flash via agy CLI (artwork); claude-opus-5-5 (3 review gates); glm-5.3-flash (orchestrator, post-processing, fixes)"
+duration_minutes = 75
+
+[[entries]]
+date = "2026-10-21 01:05"
+phase = "1"
+plan = "01-02"
+action = "UNIFY: SUMMARY written, loop closed, phase stays in progress (2 of 3 plans)"
+models = "glm-5.3-flash (orchestrator)"
+duration_minutes = 0.2
+
+[[entries]]
+date = "2026-10-21 01:20"
+phase = "1"
+plan = "01-03"
+action = "PLAN created via claude-opus-5-5 (standard, wave 3): app-id migration to io.github.toel1234, public URLs, AppImage (manual AppDir + patchelf + appimagetool), Flatpak manifest skeleton, GitHub Actions CI, phase commit + publish; 4 ACs, 4 tasks, 7 risks"
+models = "claude-opus-5-5 (plan author); glm-5.3-flash (orchestrator)"
+duration_minutes = 7.2

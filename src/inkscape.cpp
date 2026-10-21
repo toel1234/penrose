@@ -15,6 +15,8 @@
  * Released under GNU GPL v2+, read the file 'COPYING' for more information.
  */
 
+#include "config.h"
+
 #include <unistd.h>
 
 #include <boost/stacktrace.hpp>
@@ -375,8 +377,8 @@ Application::crash_handler (int /*signum*/)
         }
     }
 
-    fprintf (stderr, "Emergency save completed. Inkscape will close now.\n");
-    fprintf (stderr, "If you can reproduce this crash, please file a bug at https://inkscape.org/report\n");
+    fprintf (stderr, "Emergency save completed. " FORK_PRODUCT_NAME " will close now.\n");
+    fprintf (stderr, "If you can reproduce this crash, please file a bug at " FORK_BUGTRACKER_URL "\n");
     fprintf (stderr, "with a detailed description of the steps leading to the crash, so we can fix it.\n");
 
     /* Show nice dialog box */

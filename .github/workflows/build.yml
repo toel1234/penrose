@@ -1,0 +1,67 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+name: Build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  linux:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    env:
+      CCACHE_DIR: ${{ github.workspace }}/.ccache
+      CCACHE_MAXSIZE: 2G
+      BUILD_TYPE: Release
+      SKIP_APT_FILE: "1"
+    steps:
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          df -h
+
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+          fetch-depth: 1
+
+      - name: Fetch fork-base
+        run: git fetch --no-tags --depth=1 origin +refs/tags/fork-base:refs/tags/fork-base
+
+      - name: Restore ccache
+        uses: actions/cache@v6
+        with:
+          path: .ccache
+          key: ccache-${{ runner.os }}-${{ github.sha }}
+          restore-keys: ccache-${{ runner.os }}-
+
+      - name: Install build dependencies
+        run: fork/scripts/install-build-deps-ubuntu.sh
+
+      - name: Build
+        run: |
+          fork/scripts/build-local.sh
+          ccache -s
+
+      - name: Verify branding
+        run: fork/scripts/verify-branding.sh
+
+      - name: Build AppImage
+        run: fork/packaging/build-appimage.sh
+
+      - name: Upload AppImage
+        uses: actions/upload-artifact@v7
+        with:
+          name: Penrose-x86_64-${{ github.sha }}
+          path: build/appimage/Penrose-x86_64.AppImage
+          if-no-files-found: error
+          retention-days: 14

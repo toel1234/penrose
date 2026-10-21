@@ -10,6 +10,8 @@
 
 #include "recent-files.h"
 
+#include "config.h"
+
 #include <algorithm>
 #include <cassert>
 #include <format>
@@ -45,7 +47,7 @@ constexpr size_t platform_index = 1;
 constexpr size_t platform_index = 0;
 #endif
 
-static const Glib::ustring recent_app_name = "org.inkscape.Inkscape";
+static const Glib::ustring recent_app_name = FORK_APP_ID;
 
 /**
  * Generate a vector of recently used Inkscape files.

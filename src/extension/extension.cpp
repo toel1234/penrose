@@ -17,6 +17,8 @@
 
 #include "extension.h"
 
+#include "config.h"
+
 #include <utility>
 #include <glib/gprintf.h>
 #include <glibmm/fileutils.h>
@@ -83,15 +85,17 @@ Extension::Extension(Inkscape::XML::Node *in_repr, ImplementationHolder implemen
     if (translationdomain) {
         _translationdomain = translationdomain;
     } else {
-        _translationdomain = "inkscape"; // default to the Inkscape catalog
+        _translationdomain = GETTEXT_PACKAGE; // default to the application catalog
     }
     if (!strcmp(_translationdomain, "none")) {
         // special keyword "none" means the extension author does not want translation of extension strings
         _translation_enabled = false;
         _translationdomain = nullptr;
-    } else if (!strcmp(_translationdomain, "inkscape")) {
-        // this is our default domain; we know the location already (also respects INKSCAPE_LOCALEDIR)
-        _gettext_catalog_dir = bindtextdomain("inkscape", nullptr);
+    } else if (!strcmp(_translationdomain, "inkscape") || !strcmp(_translationdomain, GETTEXT_PACKAGE)) {
+        // "inkscape" is accepted as an alias of our default domain so existing .inx files keep translating;
+        // we know the location already (also respects INKSCAPE_LOCALEDIR)
+        _translationdomain = GETTEXT_PACKAGE;
+        _gettext_catalog_dir = bindtextdomain(GETTEXT_PACKAGE, nullptr);
     } else {
         lookup_translation_catalog();
     }
@@ -431,7 +435,7 @@ void Extension::lookup_translation_catalog() {
         locale_dir_extensions = Glib::build_filename(_base_directory.substr(0, index+1), "locale");
     }
 
-    locale_dir_system = bindtextdomain("inkscape", nullptr);
+    locale_dir_system = bindtextdomain(GETTEXT_PACKAGE, nullptr);
 
     // collect unique locations into vector
     std::vector<std::string> locale_dirs;

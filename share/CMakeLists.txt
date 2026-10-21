@@ -71,9 +71,9 @@ add_subdirectory(themes)
 # appdata and desktop files, bash completions
 if(UNIX)
   if (ENABLE_BINRELOC)
-    set(INKSCAPE_ICONPATH "\${SNAP}/share/inkscape/branding/inkscape.svg")
+    set(INKSCAPE_ICONPATH "\${SNAP}/share/inkscape/branding/penrose-logo.svg")
   else()
-    set(INKSCAPE_ICONPATH "org.inkscape.Inkscape")
+    set(INKSCAPE_ICONPATH "${FORK_APP_ID}")
   endif()
   set(INKSCAPE_MIMETYPE
 	  "image/svg+xml"
@@ -100,20 +100,20 @@ if(UNIX)
 	  ""
   )
 
-  foreach(APP Inkscape Inkview)
-    configure_file(${CMAKE_SOURCE_DIR}/org.inkscape.${APP}.desktop.template
-      ${CMAKE_BINARY_DIR}/org.inkscape.${APP}.desktop.in)
+  foreach(APP ${FORK_APP_ID} ${FORK_VIEWER_APP_ID})
+    configure_file(${CMAKE_SOURCE_DIR}/fork/branding/${APP}.desktop.template
+      ${CMAKE_BINARY_DIR}/${APP}.desktop.in)
   endforeach()
 
   if(ENABLE_NLS)
-    foreach(APP Inkscape Inkview)
-      add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/org.inkscape.${APP}.desktop
-        DEPENDS ${LANGUAGES}
+    foreach(APP ${FORK_APP_ID} ${FORK_VIEWER_APP_ID})
+      add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/${APP}.desktop
+        DEPENDS ${LANGUAGES} ${CMAKE_BINARY_DIR}/${APP}.desktop.in
         COMMAND ${GETTEXT_MSGFMT_EXECUTABLE}
         --desktop
-        --template ${CMAKE_BINARY_DIR}/org.inkscape.${APP}.desktop.in
+        --template ${CMAKE_BINARY_DIR}/${APP}.desktop.in
         -d ${CMAKE_SOURCE_DIR}/po
-        -o ${CMAKE_BINARY_DIR}/org.inkscape.${APP}.desktop
+        -o ${CMAKE_BINARY_DIR}/${APP}.desktop
         --keyword=Name
         --keyword=GenericName
         --keyword=X-GNOME-FullName
@@ -122,44 +122,40 @@ if(UNIX)
       )
     endforeach()
     add_custom_target(inkscape_desktop ALL DEPENDS
-      ${CMAKE_BINARY_DIR}/org.inkscape.Inkscape.desktop
-      ${CMAKE_BINARY_DIR}/org.inkscape.Inkview.desktop
+      ${CMAKE_BINARY_DIR}/${FORK_APP_ID}.desktop
+      ${CMAKE_BINARY_DIR}/${FORK_VIEWER_APP_ID}.desktop
     )
 
-    add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/org.inkscape.Inkscape.appdata.xml
-      DEPENDS ${LANGUAGES}
+    add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/${FORK_APP_ID}.metainfo.xml
+      DEPENDS ${LANGUAGES} ${CMAKE_SOURCE_DIR}/fork/branding/${FORK_APP_ID}.metainfo.xml.in
       COMMAND ${GETTEXT_MSGFMT_EXECUTABLE}
       --xml
-      --template ${CMAKE_SOURCE_DIR}/org.inkscape.Inkscape.appdata.xml.in
-      -d ${CMAKE_SOURCE_DIR}/po -o ${CMAKE_BINARY_DIR}/org.inkscape.Inkscape.appdata.xml
+      --template ${CMAKE_SOURCE_DIR}/fork/branding/${FORK_APP_ID}.metainfo.xml.in
+      -d ${CMAKE_SOURCE_DIR}/po -o ${CMAKE_BINARY_DIR}/${FORK_APP_ID}.metainfo.xml
     )
-    add_custom_target(inkscape_appdata ALL DEPENDS ${CMAKE_BINARY_DIR}/org.inkscape.Inkscape.appdata.xml)
+    add_custom_target(inkscape_appdata ALL DEPENDS ${CMAKE_BINARY_DIR}/${FORK_APP_ID}.metainfo.xml)
   else()
-    configure_file(${CMAKE_SOURCE_DIR}/org.inkscape.Inkscape.appdata.xml.in ${CMAKE_BINARY_DIR}/org.inkscape.Inkscape.appdata.xml COPYONLY)
-    foreach(APP Inkscape Inkview)
-      configure_file(${CMAKE_BINARY_DIR}/org.inkscape.${APP}.desktop.in
-        ${CMAKE_BINARY_DIR}/org.inkscape.${APP}.desktop COPYONLY)
+    configure_file(${CMAKE_SOURCE_DIR}/fork/branding/${FORK_APP_ID}.metainfo.xml.in ${CMAKE_BINARY_DIR}/${FORK_APP_ID}.metainfo.xml COPYONLY)
+    foreach(APP ${FORK_APP_ID} ${FORK_VIEWER_APP_ID})
+      configure_file(${CMAKE_BINARY_DIR}/${APP}.desktop.in
+        ${CMAKE_BINARY_DIR}/${APP}.desktop COPYONLY)
     endforeach()
   endif()
 
-  foreach(APP Inkscape Inkview)
-    install(FILES ${CMAKE_BINARY_DIR}/org.inkscape.${APP}.desktop
+  foreach(APP ${FORK_APP_ID} ${FORK_VIEWER_APP_ID})
+    install(FILES ${CMAKE_BINARY_DIR}/${APP}.desktop
       DESTINATION ${SHARE_INSTALL}/applications)
   endforeach()
 
-  install(FILES ${CMAKE_BINARY_DIR}/org.inkscape.Inkscape.appdata.xml
+  install(FILES ${CMAKE_BINARY_DIR}/${FORK_APP_ID}.metainfo.xml
     DESTINATION ${SHARE_INSTALL}/metainfo)
 
 
-  install(FILES
-    bash-completion/completions/inkscape
-    DESTINATION ${SHARE_INSTALL}/bash-completion/completions)
-  install(FILES
-    application-registry/inkscape.applications
-    DESTINATION ${SHARE_INSTALL}/application-registry/)
-  install(FILES
-    branding/inkscape.xpm
-    DESTINATION ${SHARE_INSTALL}/pixmaps/)
+  if(EXISTS ${CMAKE_SOURCE_DIR}/fork/branding/bash-completion/penrose)
+    install(FILES
+      ${CMAKE_SOURCE_DIR}/fork/branding/bash-completion/penrose
+      DESTINATION ${SHARE_INSTALL}/bash-completion/completions)
+  endif()
 
 endif()
 

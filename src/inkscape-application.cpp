@@ -37,6 +37,8 @@
 
 #include "inkscape-application.h"
 
+#include "config.h"
+
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -526,15 +528,15 @@ InkscapeApplication::InkscapeApplication()
 
     using T = Gio::Application;
 
-    auto app_id = Glib::ustring("org.inkscape.Inkscape");
+    auto app_id = Glib::ustring(FORK_APP_ID);
     auto flags = Gio::Application::Flags::HANDLES_OPEN | // Use default file opening.
                  Gio::Application::Flags::CAN_OVERRIDE_APP_ID;
     auto non_unique = false;
 
-    // Allow an independent instance of Inkscape to run. Will have matching DBus name and paths
-    // (e.g org.inkscape.Inkscape.tag, /org/inkscape/Inkscape/tag/window/1).
-    // If this flag isn't set, any new instance of Inkscape will be merged with the already running
-    // instance of Inkscape before on_open() or on_activate() is called.
+    // Allow an independent instance of Penrose to run. Will have matching DBus name and paths
+    // (e.g io.github.toel1234.Penrose.tag, /io/github/toel1234/Penrose/tag/window/1).
+    // If this flag isn't set, any new instance of Penrose will be merged with the already running
+    // instance of Penrose before on_open() or on_activate() is called.
     if (auto tag = Glib::getenv("INKSCAPE_APP_ID_TAG"); tag != "") {
         app_id += "." + tag;
         if (!Gio::Application::id_is_valid(app_id)) {
@@ -637,7 +639,7 @@ InkscapeApplication::InkscapeApplication()
     gapp->add_main_option_entry(T::OptionType::BOOL,     "system-data-directory",  '\0', N_("Print system data directory"),                                             "");
     gapp->add_main_option_entry(T::OptionType::BOOL,     "user-data-directory",    '\0', N_("Print user data directory"),                                               "");
     gapp->add_main_option_entry(T::OptionType::BOOL,     "list-input-types",       '\0', N_("List all available input file extensions"),                                               "");
-    gapp->add_main_option_entry(T::OptionType::STRING,   "app-id-tag",             '\0', N_("Create a unique instance of Inkscape with the application ID 'org.inkscape.Inkscape.TAG'"), "");
+    gapp->add_main_option_entry(T::OptionType::STRING,   "app-id-tag",             '\0', N_("Create a unique instance of Penrose with the application ID 'io.github.toel1234.Penrose.TAG'"), "");
     gapp->add_main_option_entry(T::OptionType::BOOL,     "no-extensions",          '\0', N_("Don't load any extensions"), "");
 
     // Open/Import
@@ -971,7 +973,7 @@ void InkscapeApplication::on_startup()
     gapp->add_action("quit",   sigc::mem_fun(*this, &InkscapeApplication::on_quit  ));
 
     // ========================= GUI Init =========================
-    Gtk::Window::set_default_icon_name("org.inkscape.Inkscape");
+    Gtk::Window::set_default_icon_name(FORK_APP_ID);
 
     // build_menu(); // Builds and adds menu to app. Used by all Inkscape windows. This can be done
                      // before all actions defined. * For the moment done by each window so we can add
@@ -1392,7 +1394,7 @@ InkscapeApplication::on_handle_local_options(const Glib::RefPtr<Glib::VariantDic
     if (options->contains("app-id-tag")) {
         Glib::ustring id_tag;
         options->lookup_value("app-id-tag", id_tag);
-        Glib::ustring app_id = "org.inkscape.Inkscape." + id_tag;
+        Glib::ustring app_id = Glib::ustring(FORK_APP_ID) + "." + id_tag;
         if (Gio::Application::id_is_valid(app_id)) {
             _gio_application->set_id(app_id);
         } else {
@@ -1522,7 +1524,7 @@ InkscapeApplication::on_handle_local_options(const Glib::RefPtr<Glib::VariantDic
     // when the extension author hasn't already done so
     bool use_active_window = options->contains("active-window");
     if (!options->contains("app-id-tag") && (_with_gui ? Glib::getenv("SELF_CALL") != "" : !use_active_window)) {
-        Glib::ustring app_id = "org.inkscape.Inkscape.p" + std::to_string(getpid());
+        Glib::ustring app_id = Glib::ustring(FORK_APP_ID) + ".p" + std::to_string(getpid());
         _gio_application->set_id(app_id);
     }
 
