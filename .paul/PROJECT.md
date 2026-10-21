@@ -20,8 +20,8 @@ Designers get a CorelDRAW-class vector and print-design app on Linux that is ope
 |-----------|-------|
 | Type | Application |
 | Version | 0.0.0 |
-| Status | Initializing |
-| Last Updated | 2026-10-20 22:35 |
+| Status | Phase 1 complete |
+| Last Updated | 2026-10-21 |
 
 ## Requirements
 
@@ -70,14 +70,15 @@ None yet.
 |----------|-----------|------|--------|
 | Fork Inkscape, keep GTK4 | Qt rewrite is near-total UI rewrite | 2026-10-20 | Active |
 | Linux only | User does not need Windows/macOS | 2026-10-20 | Active |
-| Product name "Penrose" (binary `penrose`, app-id `io.github.peter.Penrose` — user decision 2026-10-20, supersedes interim "Pressmark" proposal) | User's choice; Penrose tiling association fits vector/geometry; trademark/domain checks still pending before public release | 2026-10-20 | Active |
+| Product name "Penrose" (binary `penrose`; app-id `io.github.toel1234.Penrose`, viewer `io.github.toel1234.PenroseView` — user decision 2026-10-21; supersedes interim "Pressmark" and the io.github.peter namespace the project did not own) | User's choice; tiling motif fits vector/geometry; trademark/domain checks still pending before public release | 2026-10-21 | Active |
+| Hosting: GitHub `toel1234/penrose` (public) + GitHub Actions CI; app-id namespace `io.github.toel1234` | User provided hosting and gh credentials 2026-10-21 | 2026-10-21 | Active |
 
 ## Success Metrics
 
 | Metric | Target | Current | Status |
 |--------|--------|---------|--------|
 | v1 end-to-end | Open real .cdr, edit in CMYK, export print-ready PDF/X | - | Not started |
-| Build | Builds and runs on current Ubuntu | - | Not started |
+| Build | Builds and runs on Ubuntu (local + CI) | Local: green; CI run in progress | In progress |
 
 ## Tech Stack / Tools
 
@@ -88,13 +89,16 @@ None yet.
 | Build | CMake | Inherited |
 | Color | lcms2 | ICC/CMYK |
 | Import | libcdr | .cdr |
-| Packaging | Flatpak / AppImage | Linux |
+| Packaging | AppImage (CI-built, Ubuntu 24.04-class hosts) / Flatpak (manifest skeleton, unbuilt) | Linux |
 
 ## Links
 
 | Resource | URL |
 |----------|-----|
 | Upstream | https://gitlab.com/inkscape/inkscape |
+| Repository | https://github.com/toel1234/penrose |
+| Issues | https://github.com/toel1234/penrose/issues |
+| CI | https://github.com/toel1234/penrose/actions |
 
 ---
 *PROJECT.md — Updated when requirements or context change*

@@ -12,13 +12,13 @@ GPL fork of Inkscape extended with CorelDRAW-style GUI and functionality.
 ## Current Milestone
 **v0.1 Initial Release** (v0.1.0)
 Status: In progress
-Phases: 0 of 6 complete
+Phases: 1 of 6 complete
 
 ## Phases
 
 | Phase | Name | Plans | Status | Completed |
 |-------|------|-------|--------|-----------|
-| 1 | Fork, build and rebrand | 3 | Planning | - |
+| 1 | Fork, build and rebrand | 3 | Complete | 2026-10-21 |
 | 2 | CMYK/ICC color pipeline | 4 | Not started | - |
 | 3 | Multi-page + PDF/X export | 3 | Not started | - |
 | 4 | Corel-style UI and shortcuts | 4 | Not started | - |

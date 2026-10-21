@@ -16,19 +16,19 @@ See: .paul/PROJECT.md (updated 2026-10-20)
 ## Current Position
 
 Milestone: v0.1 Initial Release
-Phase: 1 of 6 (Fork, build and rebrand) — in progress (2 of 3 plans)
-Plan: 01-03 — Packaging (AppImage+Flatpak skeleton), CI, publish (PLAN created by opus, 4 ACs / 4 tasks)
-Status: PLAN 01-03 ready, APPLY starting (full-auto)
-Last activity: 2026-10-21 01:20 — Plan 01-03 written
+Phase: 1 of 6 (Fork, build and rebrand) — COMPLETE (3 of 3 plans)
+Plan: 01-03 COMPLETE — published as toel1234/penrose (see 01-03-SUMMARY.md)
+Status: Ready for Phase 2 (CMYK/ICC color pipeline) planning
+Last activity: 2026-10-21 — Phase 1 transition complete; CI run in progress
 
 Progress:
-- Milestone: [██░░░░░░░░] 20%
+- Milestone: [█░░░░░░░░░] 17%
 
 ## Loop Position
 
 ```
 PLAN ──▶ APPLY ──▶ UNIFY
-  ●        ○        ○     [01-03: packaging + CI + publish]
+  ✓        ✓        ✓     [Phase 1 complete — next: Phase 2 PLAN]
 ```
 
 ## Accumulated Context
@@ -40,6 +40,8 @@ PLAN ──▶ APPLY ──▶ UNIFY
 
 ### Deferred Issues
 - Pending before any public release: EUIPO/USPTO trademark + domain checks for "Penrose" (carried from name checkpoint).
+- CI green confirmation: run https://github.com/toel1234/penrose/actions/runs/39529303947 was in_progress at transition; check result next session.
+- `cli_tests` user-data-directory test expects profile dir `inkscape` (known failure, not weakened); poppler GPGME/NSS3 modules for the first real Flatpak build; real Flatpak build (flatpak-builder absent locally); AppImage full-stack bundling/signing; `share/inkscape` + `INKSCAPE_*` renames; msgid translations; `1.5-dev` version scheme.
 
 ### Blockers/Concerns
 - None open. Sudo deps install completed by user (14 packages). Build race workaround and all deviations recorded in 01-01-SUMMARY.md.
@@ -47,10 +49,10 @@ PLAN ──▶ APPLY ──▶ UNIFY
 
 ## Session Continuity
 
-Last session: 2026-10-21 01:05
-Stopped at: Loop 01-02 closed (SUMMARY + STATE + ledger synced)
-Next action: /paul:plan for 01-03 (packaging skeleton: AppImage, Flatpak manifest, CI; fix crash-dialog tracker URL + homepage placeholder)
-Resume file: .paul/phases/01-fork-build/01-02-SUMMARY.md
+Last session: 2026-10-21 (Phase 1 complete, published)
+Stopped at: Phase 1 transition done; repo live at github.com/toel1234/penrose
+Next action: /paul:plan for Phase 2 (CMYK/ICC color pipeline); check CI run result
+Resume file: .paul/phases/01-fork-build/01-03-SUMMARY.md
 
 ---
 *STATE.md — Updated after every significant action*
